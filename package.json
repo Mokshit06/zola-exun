@@ -1,0 +1,29 @@
+{
+  "name": "exun",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "nodemon server",
+    "develop": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "start": "node server"
+  },
+  "keywords": [],
+  "author": "Mokshit Jain",
+  "license": "ISC",
+  "dependencies": {
+    "connect-mongo": "^3.2.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
+    "dotenv-flow": "^3.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.14",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
+  }
+}
