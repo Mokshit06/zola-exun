@@ -1,20 +1,30 @@
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import Layout from 'components/Layout';
+import { ChatsProvider } from 'contexts/ChatsProvider';
 import { GlobalProvider } from 'contexts/GlobalProvider';
 import { SocketProvider } from 'contexts/SocketProvider';
-import { ChatsProvider } from 'contexts/ChatsProvider';
 import { AppProps } from 'next/app';
-import Header from '../components/Header';
-import '../styles/globals.css';
+
+const config = {
+  useSystemColorMode: false,
+  initialColorMode: 'light',
+};
+
+const customTheme = extendTheme({ config });
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <GlobalProvider>
-      <SocketProvider>
-        <ChatsProvider>
-          <Header />
-          <Component {...pageProps} />
-        </ChatsProvider>
-      </SocketProvider>
-    </GlobalProvider>
+    <ChakraProvider theme={customTheme}>
+      <GlobalProvider>
+        <SocketProvider>
+          <ChatsProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ChatsProvider>
+        </SocketProvider>
+      </GlobalProvider>
+    </ChakraProvider>
   );
 }
 

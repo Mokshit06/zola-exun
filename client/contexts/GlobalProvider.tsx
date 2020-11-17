@@ -2,7 +2,7 @@ import useLocalStorageReducer from 'hooks/useLocalStorageReducer';
 import { createContext, Dispatch, useContext } from 'react';
 
 interface GlobalContext {
-  state: typeof initialState;
+  appliances: typeof initialState;
   dispatch: Dispatch<{
     type: string;
     payload: string;
@@ -43,7 +43,7 @@ const globalReducer = (
 };
 
 export const GlobalProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useLocalStorageReducer(
+  const [appliances, dispatch] = useLocalStorageReducer(
     'appliances',
     globalReducer,
     initialState
@@ -52,7 +52,7 @@ export const GlobalProvider: React.FC = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
-        state,
+        appliances,
         dispatch,
       }}
     >
