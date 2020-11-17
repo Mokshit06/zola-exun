@@ -1,18 +1,12 @@
 import useAuth from '../hooks/useAuth';
 
 export default function Home() {
-  const { isAuthenticated, isLoading, user } = useAuth();
-
-  if (isLoading) return <h1>Loading...</h1>;
-  if (!isAuthenticated) return <h1>Unauthenticated</h1>;
+  const { user, logout } = useAuth();
 
   return (
     <div>
-      <p>{user.name}</p>
-      <p>{user.email}</p>
-      <img src={user.image} />
-      <p>{user.socialId}</p>
-      <p>{user.id}</p>
+      <p>{user?.name}</p>
+      <button onClick={logout}>Logout</button>
     </div>
   );
 }
