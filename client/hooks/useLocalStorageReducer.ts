@@ -23,5 +23,5 @@ export default function useLocalStorageReducer<R extends Reducer<any, any>>(
     localStorage.setItem(prefixedKey, JSON.stringify(state));
   }, [state]);
 
-  return [state, dispatch];
+  return [state, dispatch] as const;
 }

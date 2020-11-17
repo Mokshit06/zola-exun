@@ -19,6 +19,18 @@ const UserSchema = new mongoose.Schema(
     provider: {
       type: String,
     },
+    isTeacher: {
+      type: Boolean,
+      default: false,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    class: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Class',
+    },
   },
   {
     timestamps: true,

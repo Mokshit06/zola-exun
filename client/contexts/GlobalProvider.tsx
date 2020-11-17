@@ -1,9 +1,15 @@
-import { createContext, useContext, useReducer, useState } from 'react';
 import useLocalStorageReducer from 'hooks/useLocalStorageReducer';
+import { createContext, Dispatch, useContext } from 'react';
 
-interface GlobalContext {}
+interface GlobalContext {
+  state: typeof initialState;
+  dispatch: Dispatch<{
+    type: string;
+    payload: string;
+  }>;
+}
 
-const GlobalContext = createContext(null);
+const GlobalContext = createContext<GlobalContext>(null);
 
 export default function useGlobal() {
   return useContext(GlobalContext);
@@ -36,7 +42,7 @@ const globalReducer = (
   }
 };
 
-export function GlobalProvider({ children }) {
+export const GlobalProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useLocalStorageReducer(
     'appliances',
     globalReducer,
@@ -53,4 +59,4 @@ export function GlobalProvider({ children }) {
       {children}
     </GlobalContext.Provider>
   );
-}
+};

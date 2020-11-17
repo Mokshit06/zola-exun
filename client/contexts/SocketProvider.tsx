@@ -10,13 +10,11 @@ import { io, Socket } from 'socket.io-client';
 
 const SocketContext = createContext<Socket>(null);
 
-export const useSocket = () => useContext(SocketContext);
-
-interface SocketProviderProps {
-  children: ReactNode;
+export default function useSocket() {
+  return useContext(SocketContext);
 }
 
-export function SocketProvider({ children }: SocketProviderProps) {
+export const SocketProvider: React.FC = ({ children }) => {
   const [socket, setSocket] = useState<Socket>(null);
   const { user } = useAuth();
   const socketURL = process.env.NEXT_PUBLIC_API_URL || '';
@@ -39,4 +37,4 @@ export function SocketProvider({ children }: SocketProviderProps) {
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
-}
+};

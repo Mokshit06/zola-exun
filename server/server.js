@@ -5,7 +5,11 @@ const app = require('./app');
 const Room = require('./models/Room');
 
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
 const peerServer = ExpressPeerServer(server, {
   debug: true,
