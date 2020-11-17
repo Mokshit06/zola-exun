@@ -8,24 +8,6 @@ router.get('/me', ensureAuth, (req, res) => {
   res.send(req.user);
 });
 
-router.get(
-  '/login',
-  ensureGuest,
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-  })
-);
-
-router.get(
-  '/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/',
-  }),
-  (req, res) => {
-    res.redirect('/auth/success');
-  }
-);
-
 router.get('/success', (req, res) => {
   res.send(`
   <!DOCTYPE html>
@@ -49,9 +31,53 @@ router.get('/success', (req, res) => {
   `);
 });
 
+router.get('/:provider', ensureGuest, (req, res, next) => {
+  const provider = req.params.provider;
+
+  if (!/^(google|discord)$/.test(provider)) {
+    return res.json({
+      message: 'Provider not supported',
+      success: false,
+    });
+  }
+
+  let scope = ['email'];
+
+  if (provider === 'google') {
+    scope = [...scope, 'profile'];
+  } else {
+    scope = [...scope, 'identify'];
+  }
+
+  passport.authenticate(provider, {
+    scope,
+  })(req, res, next);
+});
+
+router.get(
+  '/:provider/callback',
+  (req, res, next) => {
+    const provider = req.params.provider;
+
+    if (!/^(google|discord)$/.test(provider)) {
+      return res.json({
+        message: 'Provider not supported',
+        success: false,
+      });
+    }
+
+    passport.authenticate(provider, {
+      failureRedirect: '/',
+    })(req, res, next);
+  },
+  (req, res) => {
+    res.redirect('/auth/success');
+  }
+);
+
 router.post('/logout', (req, res) => {
   req.logout();
-  res.send('Logged out');
+  res.json({ message: 'Logged out', success: true });
 });
 
 module.exports = router;

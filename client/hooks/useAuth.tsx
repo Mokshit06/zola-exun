@@ -11,7 +11,7 @@ export default function useAuth() {
   const { data, error, isLoading, isError } = useQuery<
     User,
     { message: string }
-  >('user', () => fetcher<User>('/auth/me'));
+  >('user', () => fetcher<User>('/auth/me'), { retry: false });
 
   const [mutate] = useMutation(() => fetcher<User>('/auth/me'), {
     onSuccess: () => {
@@ -49,11 +49,11 @@ export default function useAuth() {
   };
 
   return {
-    isAuthenticated: !isLoading && !error && data,
+    isAuthenticated: !!(!isLoading && !error && data),
     user: data,
     login,
     logout,
     error: isError && error.message,
-    loading: isLoading,
+    isLoading,
   };
 }

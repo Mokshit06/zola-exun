@@ -16,9 +16,15 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    provider: {
+      type: String,
+    },
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
 
