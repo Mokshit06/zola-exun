@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev:client": "npm run dev --prefix client",
-    "dev:server": "nodemon server",
+    "dev:server": "cross-env NODE_ENV=development nodemon server",
     "develop": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "start": "node server"
+    "start": "cross-env NODE_ENV=production node server"
   },
   "keywords": [],
   "author": "Mokshit Jain",
@@ -18,9 +18,11 @@
     "cross-env": "^7.0.2",
     "dotenv-flow": "^3.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "mongoose": "^5.10.14",
     "morgan": "^1.10.0",
-    "passport": "^0.4.1"
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
