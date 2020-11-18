@@ -51,38 +51,31 @@ function SidebarItem({ room, index }: SidebarItemProps) {
   const hoverColor = useColorModeValue('#edf2f7', '#ffffff14');
   const selectedColor = useColorModeValue('#E2E8F0', '#ffffff29');
 
-  return (
-    recipient && (
-      <Box width='full' px={2} pt={2}>
-        <Flex
-          as={Button}
-          width='full'
-          py={8}
-          px={5}
-          alignItems='center'
-          bgColor={isSelected ? selectedColor : 'transparent'}
-          _hover={{ background: hoverColor }}
+  return recipient ? (
+    <Box width='full' px={2} pt={2}>
+      <Flex
+        as={Button}
+        width='full'
+        py={8}
+        px={5}
+        alignItems='center'
+        bgColor={isSelected ? selectedColor : 'transparent'}
+        _hover={{ background: hoverColor }}
+        justifyContent='flex-start'
+        onClick={() => setSelectedRoomIndex(index)}
+      >
+        <Avatar size='md' name={recipient.name} mr={5} src={recipient.image} />
+        <Text
+          fontSize='1.1rem'
+          fontWeight={500}
+          display='flex'
           justifyContent='flex-start'
-          onClick={() => setSelectedRoomIndex(index)}
+          isTruncated
+          flex={1}
         >
-          <Avatar
-            size='md'
-            name={recipient.name}
-            mr={5}
-            src={recipient.image}
-          />
-          <Text
-            fontSize='1.1rem'
-            fontWeight={500}
-            display='flex'
-            justifyContent='flex-start'
-            isTruncated
-            flex={1}
-          >
-            {recipient.name}
-          </Text>
-        </Flex>
-      </Box>
-    )
-  );
+          {recipient.name}
+        </Text>
+      </Flex>
+    </Box>
+  ) : null;
 }
