@@ -10,7 +10,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 import useChats from 'contexts/ChatsProvider';
-import { useTeachers } from 'hooks/api-hooks';
+import { useChatSelectOptions } from 'hooks/api-hooks';
 import { useRef, useState } from 'react';
 
 interface ChatModalProps {
@@ -22,7 +22,7 @@ export default function ChatModal({ onClose, isOpen }: ChatModalProps) {
   const initialRef = useRef<HTMLSelectElement>();
   const [selectedTeacher, setSelectedTeacher] = useState('');
   const { joinRoom } = useChats();
-  const { data } = useTeachers();
+  const { data } = useChatSelectOptions();
 
   const handleCreate = () => {
     if (!selectedTeacher) return;

@@ -20,4 +20,13 @@ router.get('/api/teachers', async (req, res) => {
   res.json(teachers);
 });
 
+router.get('/api/students', async (req, res) => {
+  const students = await User.find({
+    isTeacher: false,
+    isAdmin: false,
+  });
+
+  res.json(students);
+});
+
 module.exports = router;

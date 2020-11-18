@@ -28,14 +28,14 @@ io.on('connection', async socket => {
     console.log('JOINED');
 
     socket.join(meetingId);
-    socket.to(meetingId).broadcast.emit('user-connected', userId);
+    socket.to(meetingId).broadcast.emit('video-connected', userId);
 
-    socket.on('video-disconnected', () => {
-      socket.to(meetingId).broadcast.emit('user-disconnected', userId);
+    socket.on('disconnected-video', () => {
+      socket.to(meetingId).broadcast.emit('video-disconnected', userId);
     });
 
     socket.on('disconnect', () => {
-      socket.to(meetingId).broadcast.emit('user-disconnected', userId);
+      socket.to(meetingId).broadcast.emit('video-disconnected', userId);
     });
   });
 
