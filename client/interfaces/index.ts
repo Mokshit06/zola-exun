@@ -4,6 +4,11 @@ type Model<T> = T & {
   id: string;
 };
 
+export type ApiResponse<T> = T & {
+  success: boolean;
+  message?: string;
+};
+
 export type User = Model<{
   socialId: string;
   name: string;

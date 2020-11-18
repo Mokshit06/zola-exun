@@ -12,7 +12,7 @@ import useAuth from 'hooks/useAuth';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { NextChakraLink } from './Link';
 
-const MenuItems: React.FC<{ href: string }> = ({ children, href }) => (
+const MenuItem: React.FC<{ href: string }> = ({ children, href }) => (
   <NextChakraLink href={href} mx={[0, 4, 6]} display='block'>
     {children}
   </NextChakraLink>
@@ -52,14 +52,15 @@ export default function Header(props: FlexProps) {
         width={{ md: 'auto', base: 'full' }}
         alignItems='center'
       >
-        <MenuItems href='/'>Home</MenuItems>
+        <MenuItem href='/'>Home</MenuItem>
         {isAuthenticated ? (
           <>
-            <MenuItems href='/chat'>Chat</MenuItems>
+            <MenuItem href='/dashboard'>Dashboard</MenuItem>
+            <MenuItem href='/chat'>Chat</MenuItem>
             <Button onClick={logout}>Logout</Button>
           </>
         ) : (
-          <MenuItems href='/login'>Login</MenuItems>
+          <MenuItem href='/login'>Login</MenuItem>
         )}
       </Box>
     </Flex>
