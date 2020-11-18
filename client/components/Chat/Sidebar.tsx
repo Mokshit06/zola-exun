@@ -18,12 +18,17 @@ export default function Sidebar() {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
-    <Flex minW='300px' boxShadow='lg' flexDir='column'>
+    <Flex
+      minW='300px'
+      boxShadow='lg'
+      flexDir='column'
+      height='calc(100vh - 82px)'
+    >
       {rooms.map((room, index) => (
         <SidebarItem room={room} index={index} key={room.id} />
       ))}
       <Spacer />
-      <Box my={3} mx={3}>
+      <Box m={3}>
         <Button width='full' size='lg' onClick={onOpen}>
           Create Room
         </Button>
@@ -48,14 +53,14 @@ function SidebarItem({ room, index }: SidebarItemProps) {
 
   return (
     recipient && (
-      <Box width='full' p={2}>
+      <Box width='full' px={2} pt={2}>
         <Flex
           as={Button}
           width='full'
           py={8}
           px={5}
           alignItems='center'
-          bgColor={isSelected && selectedColor}
+          bgColor={isSelected ? selectedColor : 'transparent'}
           _hover={{ background: hoverColor }}
           justifyContent='flex-start'
           onClick={() => setSelectedRoomIndex(index)}

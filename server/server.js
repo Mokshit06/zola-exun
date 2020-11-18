@@ -3,6 +3,8 @@ const socketIO = require('socket.io');
 const { ExpressPeerServer } = require('peer');
 const app = require('./app');
 const Room = require('./models/Room');
+const Message = require('./models/Message');
+const Filter = require('bad-words');
 
 const server = http.createServer(app);
 const io = socketIO(server, {
@@ -16,6 +18,8 @@ const peerServer = ExpressPeerServer(server, {
 });
 
 app.use('/peerjs', peerServer);
+
+const filter = new Filter();
 
 io.on('connection', async socket => {
   const id = socket.handshake.query.id;
@@ -50,6 +54,30 @@ io.on('connection', async socket => {
     }
 
     socket.join(room.id);
+  });
+
+  socket.on('render-messages-request', async ({ roomId }) => {
+    const messages = await Message.find({
+      room: roomId,
+    }).populate(['from', 'to']);
+
+    socket.emit('render-messages-response', {
+      messages,
+    });
+  });
+
+  socket.on('send-message', async ({ text, roomId }) => {
+    const cleanMessage = filter.clean(text);
+
+    const createdMessage = await Message.create({
+      from: id,
+      body: cleanMessage,
+      room: roomId,
+    });
+
+    const message = await createdMessage.populate(['from']).execPopulate();
+
+    io.in(roomId).emit('receive-message', { message, roomId });
   });
 });
 

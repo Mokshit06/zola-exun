@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const MessageSchema = require('./Message');
 
 const RoomSchema = new mongoose.Schema(
   {
@@ -16,6 +17,12 @@ const RoomSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+RoomSchema.virtual('messages', {
+  ref: 'Message',
+  localField: '_id',
+  foreignField: 'room',
+});
 
 const Room = mongoose.model('Room', RoomSchema);
 

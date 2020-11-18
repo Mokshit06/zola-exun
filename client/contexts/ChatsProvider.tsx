@@ -24,6 +24,11 @@ type JoinRoom = (params: { roomId?: string; secondUser?: string }) => void;
 
 type SendMessage = (text: string) => void;
 
+interface ReceiveMessageArgs {
+  message: Message;
+  roomId: string;
+}
+
 const ChatsContext = createContext<ChatsContext>(null);
 
 export default function useChats() {
@@ -34,25 +39,52 @@ export const ChatsProvider: React.FC = ({ children }) => {
   const socket = useSocket();
 
   const [selectedRoomIndex, setSelectedRoomIndex] = useState(0);
-  const [rooms, setRooms] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const { user } = useAuth();
 
   const selectedRoom = rooms[selectedRoomIndex];
+
+  useEffect(() => {
+    if (!selectedRoom || !socket) return;
+    socket.emit('render-messages-request', {
+      roomId: selectedRoom.id,
+    });
+
+    joinRoom({ roomId: selectedRoom.id });
+  }, [selectedRoom, socket]);
 
   useEffect(() => {
     if (socket == null) return;
 
     socket.emit('send-rooms');
 
-    socket.on('get-rooms', ({ rooms }) => {
+    socket.on('get-rooms', ({ rooms }: { rooms: Room[] }) => {
       setRooms(rooms);
     });
 
+    socket.on('render-messages-response', ({ messages }) => {
+      setMessages(messages);
+    });
+
     return () => {
+      socket.off('render-messages-response');
       socket.off('get-rooms');
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (socket == null) return;
+
+    console.log(selectedRoom);
+
+    socket.on('receive-message', ({ message, roomId }: ReceiveMessageArgs) => {
+      console.log(selectedRoom);
+      if (selectedRoom?.id === roomId) {
+        setMessages(prevMessages => [...prevMessages, message]);
+      }
+    });
+  }, [socket, selectedRoom]);
 
   const joinRoom: JoinRoom = ({ roomId, secondUser }) => {
     socket.emit('join', {
@@ -66,7 +98,7 @@ export const ChatsProvider: React.FC = ({ children }) => {
   };
 
   const sendMessage: SendMessage = text => {
-    socket.emit('send-message', { text, roomId: selectedRoom._id });
+    socket.emit('send-message', { text, roomId: selectedRoom.id });
   };
 
   const value: ChatsContext = {

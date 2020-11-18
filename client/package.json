@@ -14,6 +14,7 @@
     "axios": "^0.21.0",
     "focus-visible": "^5.2.0",
     "framer-motion": "^2.9.4",
+    "luxon": "^1.25.0",
     "next": "10.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -22,6 +23,7 @@
     "swr": "^0.3.9"
   },
   "devDependencies": {
+    "@types/luxon": "^1.25.0",
     "@types/node": "^14.14.7",
     "@types/react": "^16.9.56",
     "typescript": "^4.0.5"

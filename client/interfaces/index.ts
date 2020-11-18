@@ -16,12 +16,12 @@ export type User = Model<{
 
 export type Room = Model<{
   users: User[];
+  messages: Message[];
 }>;
 
 export type Message = Model<{
   from: User;
   body: string;
-  room: Room;
 }>;
 
 export type Class = Model<{

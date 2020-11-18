@@ -9,6 +9,7 @@ const MessageSchema = new mongoose.Schema(
     body: {
       type: String,
       required: true,
+      trim: true,
     },
     room: {
       type: mongoose.Schema.Types.ObjectId,
@@ -17,6 +18,9 @@ const MessageSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
 
