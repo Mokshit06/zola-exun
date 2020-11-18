@@ -5,6 +5,7 @@ import { ChatsProvider } from 'contexts/ChatsProvider';
 import { GlobalProvider } from 'contexts/GlobalProvider';
 import { SocketProvider } from 'contexts/SocketProvider';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 // import 'focus-visible/dist/focus-visible';
 
 const GlobalStyles = css`
@@ -24,6 +25,9 @@ const customTheme = extendTheme({ config });
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={customTheme}>
+      <Head>
+        <title>Prisma</title>
+      </Head>
       <Global styles={GlobalStyles} />
       <GlobalProvider>
         <SocketProvider>

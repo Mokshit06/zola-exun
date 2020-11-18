@@ -24,6 +24,21 @@ const filter = new Filter();
 io.on('connection', async socket => {
   const id = socket.handshake.query.id;
 
+  socket.on('video-join', async (meetingId, userId) => {
+    console.log('JOINED');
+
+    socket.join(meetingId);
+    socket.to(meetingId).broadcast.emit('user-connected', userId);
+
+    socket.on('video-disconnected', () => {
+      socket.to(meetingId).broadcast.emit('user-disconnected', userId);
+    });
+
+    socket.on('disconnect', () => {
+      socket.to(meetingId).broadcast.emit('user-disconnected', userId);
+    });
+  });
+
   socket.on('send-rooms', async () => {
     const rooms = await Room.find({
       users: id,

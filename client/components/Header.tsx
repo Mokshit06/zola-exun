@@ -34,7 +34,7 @@ export default function Header(props: FlexProps) {
     >
       <Flex align='center' mr={5}>
         <Heading as='h1' size='lg' letterSpacing={'-.1rem'}>
-          Exun 20
+          Prisma
         </Heading>
       </Flex>
 
