@@ -35,3 +35,9 @@ export type Class = Model<{
   teacher: User;
   code: string;
 }>;
+
+export type Meeting = Model<{
+  code: string;
+  class: Class;
+  studentsPresent: User[];
+}>;

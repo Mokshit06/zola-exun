@@ -22,7 +22,7 @@ router.get('/', ensureAuth, async (req, res, next) => {
 router.post('/', ensureAuth, ensureTeacher, async (req, res, next) => {
   try {
     if (req.user.class) {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: 'You can create only one class',
       });

@@ -6,6 +6,7 @@ import useAuth from 'hooks/useAuth';
 import { ApiResponse, Class } from 'interfaces';
 import api from 'lib/axios';
 import { ClassJoinSchema } from 'lib/form-schema';
+import Router from 'next/router';
 
 export default function JoinClass() {
   return (
@@ -67,6 +68,8 @@ function JoinClassForm() {
         duration: 3000,
         isClosable: true,
       });
+
+      Router.push('/dashboard');
     } catch (error) {
       const errorText = error?.response?.data?.message || error;
 

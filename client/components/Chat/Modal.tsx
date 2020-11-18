@@ -36,8 +36,8 @@ export default function ChatModal({ onClose, isOpen }: ChatModalProps) {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalCloseButton />
         <ModalHeader>Talk to a teacher</ModalHeader>
+        <ModalCloseButton />
         <ModalBody>
           If you have any doubts related to your studies, you can talk to one of
           your teachers

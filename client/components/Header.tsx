@@ -20,7 +20,7 @@ const MenuItem: React.FC<{ href: string }> = ({ children, href }) => (
 
 export default function Header(props: FlexProps) {
   const { isOpen, onToggle } = useDisclosure();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
 
   return (
     <Flex
@@ -57,6 +57,12 @@ export default function Header(props: FlexProps) {
           <>
             <MenuItem href='/dashboard'>Dashboard</MenuItem>
             <MenuItem href='/chat'>Chat</MenuItem>
+            {!user.class &&
+              (user.isTeacher ? (
+                <MenuItem href='/class/create'>Create Class</MenuItem>
+              ) : (
+                <MenuItem href='/class/join'>Join Class</MenuItem>
+              ))}
             <Button onClick={logout}>Logout</Button>
           </>
         ) : (

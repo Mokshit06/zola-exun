@@ -5,6 +5,7 @@ import {
   Heading,
   Select,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import ShareModal from 'components/Class/ShareModal';
 import FormField from 'components/FormField';
@@ -50,6 +51,7 @@ interface CreateClassFormProps {
 
 function CreateClassForm({ setCode, setOpen }: CreateClassFormProps) {
   const { user } = useAuth();
+  const toast = useToast();
   const initialValues = {
     grade: 9,
     section: 'A',
@@ -61,21 +63,40 @@ function CreateClassForm({ setCode, setOpen }: CreateClassFormProps) {
     values: InitialValues,
     { setSubmitting }: FormikHelpers<InitialValues>
   ) => {
-    if (!user || !user.isTeacher) {
+    if (!user) {
       return;
     }
 
-    const { data } = await api.post<ApiResponse<{ code: string }>>(
-      '/api/class',
-      {
-        grade: values.grade,
-        section: values.section,
-      }
-    );
+    try {
+      const { data } = await api.post<ApiResponse<{ code: string }>>(
+        '/api/class',
+        {
+          grade: values.grade,
+          section: values.section,
+        }
+      );
+
+      toast({
+        title: 'Class created',
+        description: 'Your class has been created!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      setCode(data.code);
+      setOpen(true);
+    } catch (error) {
+      const errorText = error?.response?.data?.message || error;
+
+      toast({
+        title: errorText,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
 
     setSubmitting(false);
-    setCode(data.code);
-    setOpen(true);
   };
 
   return (
