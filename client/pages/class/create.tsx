@@ -12,7 +12,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import useAuth from 'hooks/useAuth';
 import { ApiResponse } from 'interfaces';
 import api from 'lib/axios';
-import { ClassSchema } from 'lib/class-schema';
+import { ClassSchema } from 'lib/form-schema';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 export default function CreateClass() {

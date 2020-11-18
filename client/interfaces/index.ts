@@ -4,7 +4,7 @@ type Model<T> = T & {
   id: string;
 };
 
-export type ApiResponse<T> = T & {
+export type ApiResponse<T = {}> = T & {
   success: boolean;
   message?: string;
 };
@@ -33,4 +33,5 @@ export type Class = Model<{
   grade: number;
   section: string;
   teacher: User;
+  code: string;
 }>;

@@ -1,3 +1,4 @@
+import { usePrevious } from '@chakra-ui/react';
 import { Message, Room } from 'interfaces';
 import {
   createContext,
@@ -44,14 +45,32 @@ export const ChatsProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
 
   const selectedRoom = rooms[selectedRoomIndex];
+  const previousRoom = usePrevious(selectedRoom);
 
   useEffect(() => {
     if (!selectedRoom || !socket) return;
+
+    if (previousRoom) {
+      socket.emit('disconnect-room', {
+        roomId: previousRoom.id,
+      });
+    }
+
     socket.emit('render-messages-request', {
       roomId: selectedRoom.id,
     });
 
+    socket.on('receive-message', ({ message, roomId }: ReceiveMessageArgs) => {
+      if (selectedRoom?.id === roomId) {
+        setMessages(prevMessages => [...prevMessages, message]);
+      }
+    });
+
     joinRoom({ roomId: selectedRoom.id });
+
+    return () => {
+      socket.off('receive-message');
+    };
   }, [selectedRoom, socket]);
 
   useEffect(() => {
@@ -72,19 +91,6 @@ export const ChatsProvider: React.FC = ({ children }) => {
       socket.off('get-rooms');
     };
   }, [socket]);
-
-  useEffect(() => {
-    if (socket == null) return;
-
-    console.log(selectedRoom);
-
-    socket.on('receive-message', ({ message, roomId }: ReceiveMessageArgs) => {
-      console.log(selectedRoom);
-      if (selectedRoom?.id === roomId) {
-        setMessages(prevMessages => [...prevMessages, message]);
-      }
-    });
-  }, [socket, selectedRoom]);
 
   const joinRoom: JoinRoom = ({ roomId, secondUser }) => {
     socket.emit('join', {

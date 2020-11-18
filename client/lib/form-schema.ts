@@ -12,3 +12,12 @@ export const ClassSchema = yup.object().shape({
     .typeError('Invalid Section')
     .required('Section is required'),
 });
+
+export const ClassJoinSchema = yup.object().shape({
+  code: yup
+    .string()
+    .typeError('Invalid code')
+    .length(10, 'Code is too short')
+    .trim()
+    .required('Code is required'),
+});

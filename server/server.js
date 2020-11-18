@@ -71,6 +71,10 @@ io.on('connection', async socket => {
     socket.join(room.id);
   });
 
+  socket.on('disconnect-room', ({ roomId }) => {
+    socket.leave(roomId);
+  });
+
   socket.on('render-messages-request', async ({ roomId }) => {
     const messages = await Message.find({
       room: roomId,

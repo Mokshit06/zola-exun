@@ -1,7 +1,11 @@
 const { Router } = require('express');
 const Class = require('../models/Class');
 const User = require('../models/User');
-const { ensureAuth } = require('../middleware/auth');
+const {
+  ensureAuth,
+  ensureTeacher,
+  ensureStudent,
+} = require('../middleware/auth');
 
 const router = Router();
 
@@ -15,8 +19,15 @@ router.get('/', ensureAuth, async (req, res, next) => {
   }
 });
 
-router.post('/', ensureAuth, async (req, res, next) => {
+router.post('/', ensureAuth, ensureTeacher, async (req, res, next) => {
   try {
+    if (req.user.class) {
+      return res.json({
+        success: false,
+        message: 'You can create only one class',
+      });
+    }
+
     const { grade, section } = req.body;
 
     if (!grade || !section) {
@@ -38,6 +49,36 @@ router.post('/', ensureAuth, async (req, res, next) => {
     res.json({
       code: userClass.code,
       success: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/join', ensureAuth, ensureStudent, async (req, res, next) => {
+  try {
+    if (req.user.class) {
+      return res.status(400).json({
+        success: false,
+        message: 'You are already part of a class',
+      });
+    }
+
+    const userClass = await Class.findOne({ code: req.body.code });
+
+    if (!userClass) {
+      return res.status(404).json({
+        success: false,
+        message: "Class doesn't exist",
+      });
+    }
+
+    req.user.class = userClass.id;
+    await req.user.save();
+
+    res.json({
+      success: true,
+      message: `Joining ${userClass.grade}${userClass.section}`,
     });
   } catch (error) {
     next(error);
