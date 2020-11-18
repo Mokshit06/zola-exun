@@ -14,6 +14,7 @@ export default function Home() {
   return (
     <div>
       <p>{user?.name}</p>
+      <p>{user?.id}</p>
       <Button onClick={logout}>Logout</Button>
     </div>
   );

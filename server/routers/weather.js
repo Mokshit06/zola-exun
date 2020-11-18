@@ -25,7 +25,11 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.send('Unable to connect to weather service!');
+
+    res.json({
+      message: 'Unable to connect to weather service!',
+      success: false,
+    });
   }
 });
 

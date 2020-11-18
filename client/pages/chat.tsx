@@ -7,9 +7,9 @@ export default function Chat() {
   const { selectedRoom } = useChats();
 
   return (
-    <Flex>
+    <Flex flex={1} width='full'>
       <Sidebar />
-      {selectedRoom ? <Conversation /> : <h1>No rooms selected</h1>}
+      {selectedRoom && <Conversation />}
     </Flex>
   );
 }
