@@ -7,6 +7,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
 import ShareModal from 'components/Class/ShareModal';
 import FormField from 'components/FormField';
 import { Form, Formik, FormikHelpers } from 'formik';
@@ -17,7 +18,9 @@ import { ClassSchema } from 'lib/form-schema';
 import Router from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-export default function CreateClass() {
+export default Auth(CreateClass, { isTeacher: true });
+
+function CreateClass() {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [code, setCode] = useState('');
 

@@ -23,6 +23,8 @@ export default function Class() {
     onOpen();
   }
 
+  const isTeacher = user?.isTeacher;
+
   return (
     <CardsContainer title='Your Class'>
       <ShareModal isOpen={isOpen} onClose={onClose} code={url} />
@@ -37,20 +39,22 @@ export default function Class() {
                 }}
               />
             </NextChakraLink>
-            <CardButton
-              card={{
-                icon: MdVideoCall,
-                title: 'Create a Meeting',
-              }}
-              onClick={createMeeting}
-            />
+            {isTeacher && (
+              <CardButton
+                card={{
+                  icon: MdVideoCall,
+                  title: 'Create a Meeting',
+                }}
+                onClick={createMeeting}
+              />
+            )}
           </>
         ) : (
-          <NextChakraLink href='/class/create'>
+          <NextChakraLink href={`/class/${isTeacher ? 'create' : 'join'}`}>
             <Card
               card={{
                 icon: MdClass,
-                title: 'Create your class',
+                title: `${isTeacher ? 'Create' : 'Join'} your class`,
               }}
             />
           </NextChakraLink>

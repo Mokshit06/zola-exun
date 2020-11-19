@@ -1,15 +1,41 @@
 import { useRouter } from 'next/router';
 import useAuth from '../hooks/useAuth';
+import Loader from './Loader';
 
-export const Auth = (Component: any) => (props: any) => {
-  const { loading } = useAuth();
-  // const router = useRouter();
+interface AuthOptions {
+  guest?: boolean;
+  isTeacher?: boolean;
+  isStudent?: boolean;
+}
 
-  if (loading) return <h1>Loading</h1>;
+const defaultOptions: AuthOptions = {
+  guest: false,
+  isTeacher: false,
+  isStudent: false,
+};
 
-  // if ((guest && isAuthenticated) || (!guest && !isAuthenticated)) {
-  //   router.replace('/');
-  // }
+export const Auth = (
+  Component: any,
+  { guest, isTeacher, isStudent }: AuthOptions = defaultOptions
+) => (props: any) => {
+  const { loading, isAuthenticated, error, user } = useAuth();
+  const router = useRouter();
+
+  if (loading) return <Loader />;
+
+  if (
+    (guest && isAuthenticated) ||
+    (!guest && !isAuthenticated) ||
+    (!guest && error) ||
+    (!guest && isTeacher && !user?.isTeacher) ||
+    (!guest && isStudent && (user?.isAdmin || user?.isTeacher))
+  ) {
+    router.push('/');
+    return null;
+  }
+
+  console.log(isAuthenticated);
+  console.log(error);
 
   return <Component {...props} />;
 };

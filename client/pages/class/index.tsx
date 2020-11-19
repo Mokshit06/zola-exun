@@ -1,23 +1,17 @@
-import {
-  Flex,
-  Box,
-  Heading,
-  Checkbox,
-  useColorModeValue,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, useColorModeValue } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
 import {
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from 'components/Table';
 import { useClass } from 'hooks/api-hooks';
 import { DateTime } from 'luxon';
 
-export default function ClassPage() {
+function ClassPage() {
   const { data: userClass } = useClass();
 
   const bgColor = useColorModeValue('gray.50', 'gray.700');
@@ -83,3 +77,5 @@ export default function ClassPage() {
     </Flex>
   );
 }
+
+export default Auth(ClassPage);

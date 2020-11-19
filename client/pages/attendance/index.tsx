@@ -6,11 +6,12 @@ import {
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
 import { NextChakraLink } from 'components/Link';
 import { useMeetings } from 'hooks/api-hooks';
 import { DateTime } from 'luxon';
 
-export default function Attendence() {
+function Attendence() {
   const { data: meetings } = useMeetings();
   const hoverColor = useColorModeValue('#edf2f7', '#ffffff14');
   const selectedColor = useColorModeValue('#E2E8F0', '#ffffff29');
@@ -61,3 +62,5 @@ export default function Attendence() {
     </Flex>
   );
 }
+
+export default Auth(Attendence, { isTeacher: true });

@@ -1,11 +1,12 @@
 import { Box, IconButton } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
 import Appliances from 'components/Dashboard/Appliances';
 import Class from 'components/Dashboard/Class';
 import Weather from 'components/Dashboard/Weather';
 import useSpeechRecognition from 'contexts/SpeechProvider';
 import { MdMic, MdMicOff } from 'react-icons/md';
 
-export default function Dashboard() {
+function Dashboard() {
   const { recognition, isRecording } = useSpeechRecognition();
 
   const handleRecordClick = () => {
@@ -34,3 +35,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Auth(Dashboard);

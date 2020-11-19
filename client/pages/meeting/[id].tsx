@@ -6,6 +6,8 @@ import {
   useColorModeValue,
   useToast,
 } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
+import Loader from 'components/Loader';
 import useSocket from 'contexts/SocketProvider';
 import { useSingleMeeting } from 'hooks/api-hooks';
 import useAuth from 'hooks/useAuth';
@@ -13,7 +15,7 @@ import { User } from 'interfaces';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState, VideoHTMLAttributes } from 'react';
 
-export default function Meeting() {
+function Meeting() {
   const socket = useSocket();
   const [shouldStart, setShouldStart] = useState(false);
   const [error, setError] = useState('');
@@ -135,7 +137,7 @@ export default function Meeting() {
 
   return (
     <Flex flex={1} width='full' maxH='calc(100vh - 90px)' overflow='hidden'>
-      {shouldStart && (
+      {!error || shouldStart ? (
         <Grid
           width='full'
           templateColumns='repeat(auto-fit, minmax(500px, 1fr))'
@@ -156,10 +158,14 @@ export default function Meeting() {
             </AspectRatio>
           ))}
         </Grid>
+      ) : (
+        <Loader />
       )}
     </Flex>
   );
 }
+
+export default Auth(Meeting);
 
 function VideoStream({
   stream,

@@ -49,4 +49,4 @@ function Login() {
   );
 }
 
-export default Auth(Login);
+export default Auth(Login, { guest: true });

@@ -1,10 +1,11 @@
 import { Flex } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
 import Conversation from 'components/Chat/Conversation';
 import Sidebar from 'components/Chat/Sidebar';
 import useChats from 'contexts/ChatsProvider';
 import Head from 'next/head';
 
-export default function Chat() {
+function Chat() {
   const { selectedRoom } = useChats();
 
   return (
@@ -19,3 +20,5 @@ export default function Chat() {
     </>
   );
 }
+
+export default Auth(Chat);

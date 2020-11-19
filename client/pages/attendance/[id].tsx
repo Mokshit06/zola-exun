@@ -6,6 +6,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
 import {
   Table,
   TableBody,
@@ -18,7 +19,7 @@ import { useClass, useSingleMeeting } from 'hooks/api-hooks';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/router';
 
-export default function SingleAttendence() {
+function SingleAttendence() {
   const router = useRouter();
   const { id: meetingId } = router.query;
   const { data: meeting, error } = useSingleMeeting(meetingId as string);
@@ -101,3 +102,5 @@ export default function SingleAttendence() {
     </Flex>
   );
 }
+
+export default Auth(SingleAttendence, { isTeacher: true });

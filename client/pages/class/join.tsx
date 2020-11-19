@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Heading, Input, useToast } from '@chakra-ui/react';
+import { Auth } from 'components/Auth';
 import FormField from 'components/FormField';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useClass } from 'hooks/api-hooks';
@@ -8,7 +9,9 @@ import api from 'lib/axios';
 import { ClassJoinSchema } from 'lib/form-schema';
 import Router from 'next/router';
 
-export default function JoinClass() {
+export default Auth(JoinClass, { isStudent: true });
+
+function JoinClass() {
   return (
     <Flex flex={1} width='full' alignItems='center' justifyContent='center'>
       <Box
