@@ -29,11 +29,10 @@ io.on('connection', async socket => {
   socket.on('video-join', async (meetingId, userId) => {
     try {
       const user = await User.findById(userId);
-      console.log(user);
 
       await Meeting.updateOne(
         { code: meetingId },
-        { $addToSet: { studentsPresent: userId } }
+        { $addToSet: { studentsPresent: { user: userId } } }
       );
 
       socket.join(meetingId);

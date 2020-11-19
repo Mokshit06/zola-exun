@@ -67,6 +67,9 @@ export default function Header(props: FlexProps) {
               ) : (
                 <MenuItem href='/class/join'>Join Class</MenuItem>
               ))}
+            {user.isTeacher && (
+              <MenuItem href='/attendance'>Attendance</MenuItem>
+            )}
             <Button onClick={logout}>Logout</Button>
           </>
         ) : (

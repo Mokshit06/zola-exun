@@ -13,8 +13,14 @@ const MeetingSchema = new mongoose.Schema(
     },
     studentsPresent: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        joinedAt: {
+          type: String,
+          default: Date.now,
+        },
       },
     ],
   },

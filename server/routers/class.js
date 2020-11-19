@@ -11,7 +11,7 @@ const router = Router();
 
 router.get('/', ensureAuth, async (req, res, next) => {
   try {
-    const userClass = await Class.findById(req.user.class);
+    const userClass = await Class.findById(req.user.class).populate('students');
 
     res.json(userClass);
   } catch (error) {

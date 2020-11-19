@@ -34,10 +34,14 @@ export type Class = Model<{
   section: string;
   teacher: User;
   code: string;
+  students: User[];
 }>;
 
 export type Meeting = Model<{
   code: string;
   class: Class;
-  studentsPresent: User[];
+  studentsPresent: {
+    user: User;
+    joinedAt: string;
+  }[];
 }>;

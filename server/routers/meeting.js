@@ -9,7 +9,7 @@ router.get('/', ensureAuth, async (req, res, next) => {
   try {
     const meetings = await Meeting.find({
       class: req.user.class,
-    });
+    }).limit(8);
 
     res.json(meetings);
   } catch (error) {
@@ -21,7 +21,12 @@ router.get('/:code', ensureAuth, async (req, res, next) => {
   try {
     const { code } = req.params;
 
-    const meeting = await Meeting.findOne({ code }).populate('studentsPresent');
+    const meeting = await Meeting.findOne({ code }).populate({
+      path: 'studentsPresent',
+      populate: {
+        path: 'user',
+      },
+    });
 
     if (!meeting) {
       return res.status(404).send({

@@ -28,7 +28,7 @@ exports.ensureStudent = (req, res, next) => {
 };
 
 exports.ensureTeacher = (req, res, next) => {
-  if (!req.user.isTeacher) {
+  if (req.user.isTeacher) {
     return next();
   }
 

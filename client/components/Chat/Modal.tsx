@@ -33,7 +33,12 @@ export default function ChatModal({ onClose, isOpen }: ChatModalProps) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      initialFocusRef={initialRef}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Talk to a teacher</ModalHeader>
