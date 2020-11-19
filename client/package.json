@@ -12,7 +12,6 @@
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
     "axios": "^0.21.0",
-    "focus-visible": "^5.2.0",
     "formik": "^2.2.5",
     "framer-motion": "^2.9.4",
     "luxon": "^1.25.0",
