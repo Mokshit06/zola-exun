@@ -190,7 +190,7 @@ function Meeting() {
   return (
     <Flex flex={1} width='full' maxH='calc(100vh - 90px)' overflow='hidden'>
       <Head>
-        <title>Meeting | Prisma</title>
+        <title>Meeting | Zola</title>
       </Head>
       {!error || shouldStart ? (
         <>

@@ -32,9 +32,10 @@ export default function Home() {
       justifyContent='center'
       alignItems='center'
       position='relative'
+      overflow='hidden'
     >
       <Head>
-        <title>Home | Prisma</title>
+        <title>Home | Zola</title>
       </Head>
       <Image
         src={`/assets/triangle-${colorMode}.svg`}
@@ -48,11 +49,17 @@ export default function Home() {
         width={{ base: '85%', sm: '80%' }}
         mx='auto'
         height='full'
+        alignContent='center'
         gap={4}
         columns={{ base: 1, sm: 1, md: 2 }}
       >
-        <Box height='full' width='full'>
-          <Heading fontSize='3rem'>Prisma</Heading>
+        <Flex
+          height='full'
+          width='90%'
+          flexDir='column'
+          justifyContent='center'
+        >
+          <Heading fontSize='3rem'>Zola</Heading>
           <Text fontSize='1.6rem' mt={6}>
             The first all in one platform which you didn't know you needed!
           </Text>
@@ -60,13 +67,21 @@ export default function Home() {
             rightIcon={<FaRocket size='0.9rem' />}
             href='/dashboard'
             size='lg'
+            width='fit-content'
             mt={6}
             onClick={getStarted}
           >
             Get Started
           </Button>
+        </Flex>
+        <Box height='full' width='full'>
+          <Image
+            border='none'
+            src='/assets/3784896.png'
+            width='full'
+            height='full'
+          />
         </Box>
-        <Box height='full' width='full' />
       </SimpleGrid>
     </Flex>
   );

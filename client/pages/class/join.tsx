@@ -16,7 +16,7 @@ function JoinClass() {
   return (
     <Flex flex={1} width='full' alignItems='center' justifyContent='center'>
       <Head>
-        <title>Join you class | Prisma</title>
+        <title>Join you class | Zola</title>
       </Head>
       <Box
         borderWidth={1}

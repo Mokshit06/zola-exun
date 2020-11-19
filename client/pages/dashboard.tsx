@@ -21,7 +21,7 @@ function Dashboard() {
 
   return (
     <Box>
-      <Head>Dashboard | Prisma</Head>
+      <Head>Dashboard | Zola</Head>
       <Weather />
       <Appliances />
       <Class />

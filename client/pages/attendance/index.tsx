@@ -19,7 +19,7 @@ function Attendence() {
 
   return (
     <Flex width='full' flex={1} alignItems='center' justifyContent='center'>
-      <Head>Attendence | Prisma</Head>
+      <Head>Attendence | Zola</Head>
       <Box
         borderWidth={1}
         p={8}

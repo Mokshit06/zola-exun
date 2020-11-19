@@ -40,7 +40,7 @@ function SingleAttendence() {
   return (
     <Flex flex={1} width='full' justifyContent='center'>
       <Head>
-        <title>{title} | Prisma</title>
+        <title>{title} | Zola</title>
       </Head>
       <Box mt={4} maxW='90vw' w='1000px'>
         <Heading py={6} mb={2}>

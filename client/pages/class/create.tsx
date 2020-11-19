@@ -28,7 +28,7 @@ function CreateClass() {
   return (
     <Flex flex={1} width='full' alignItems='center' justifyContent='center'>
       <Head>
-        <title>Create Class | Prisma</title>
+        <title>Create Class | Zola</title>
       </Head>
       <ShareModal
         isOpen={isOpen}

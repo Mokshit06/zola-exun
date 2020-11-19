@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={customTheme}>
       <Head>
-        <title>Prisma</title>
+        <title>Zola</title>
       </Head>
       <GlobalProvider>
         <SpeechProvider>

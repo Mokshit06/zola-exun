@@ -24,7 +24,7 @@ function ClassPage() {
       <Head>
         <title>
           Class {userClass?.grade}
-          {userClass?.section} | Prisma
+          {userClass?.section} | Zola
         </title>
       </Head>
       <Box mt={4} maxW='90vw' w='1000px'>

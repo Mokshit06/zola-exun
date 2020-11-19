@@ -38,7 +38,7 @@ export default function Header(props: FlexProps) {
     >
       <Flex align='center' mr={5}>
         <Heading mb={{ base: 3, sm: 0 }} as='h1' size='lg'>
-          Prisma
+          Zola
         </Heading>
       </Flex>
 
