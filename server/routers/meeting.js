@@ -17,23 +17,26 @@ router.get('/', ensureAuth, async (req, res, next) => {
   }
 });
 
-router.get('/:id', ensureAuth, async (req, res, next) => {
+router.get('/:code', ensureAuth, async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const { code } = req.params;
 
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(404).json({
-        success: false,
-        message: 'Meeting not found',
-      });
-    }
-
-    const meeting = await Meeting.findById(id).populate('studentsPresent');
+    const meeting = await Meeting.findOne({ code }).populate('studentsPresent');
 
     if (!meeting) {
       return res.status(404).send({
         success: false,
         message: 'Meeting not found',
+      });
+    }
+
+    if (
+      JSON.stringify(meeting.class) !== JSON.stringify(req.user.class) &&
+      !req.user.isAdmin
+    ) {
+      return res.status(404).send({
+        success: false,
+        message: 'You are not part of the class',
       });
     }
 

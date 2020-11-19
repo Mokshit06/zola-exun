@@ -1,6 +1,6 @@
 import { Class, Meeting, User } from 'interfaces';
 import fetcher from 'lib/fetcher';
-import useSWR from 'swr';
+import useSWR, { ConfigInterface } from 'swr';
 import useAuth from './useAuth';
 
 export function useChatSelectOptions() {
@@ -18,12 +18,13 @@ export function useClass() {
   return useSWR<Class>(user && '/api/class', fetcher);
 }
 
-export function useSingleMeeting(id: string) {
+export function useSingleMeeting(id: string, config?: ConfigInterface) {
   const { user } = useAuth();
 
   return useSWR<Meeting>(
-    user && ['/api/meetings', id],
-    (url: string, id: string) => fetcher(`${url}/${id}`)
+    user && id ? ['/api/meetings', id] : null,
+    (url: string, id: string) => fetcher(`${url}/${id}`),
+    config
   );
 }
 

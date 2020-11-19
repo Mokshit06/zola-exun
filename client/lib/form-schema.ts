@@ -17,7 +17,8 @@ export const ClassJoinSchema = yup.object().shape({
   code: yup
     .string()
     .typeError('Invalid code')
-    .length(10, 'Code is too short')
+    .min(10, 'Code is too short')
+    .max(10, 'Code is too long')
     .trim()
     .required('Code is required'),
 });

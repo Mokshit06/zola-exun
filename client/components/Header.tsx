@@ -6,10 +6,12 @@ import {
   Heading,
   IconButton,
   Spacer,
+  useColorMode,
+  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
 import useAuth from 'hooks/useAuth';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaMoon, FaSun, FaTimes } from 'react-icons/fa';
 import { NextChakraLink } from './Link';
 
 const MenuItem: React.FC<{ href: string }> = ({ children, href }) => (
@@ -21,6 +23,8 @@ const MenuItem: React.FC<{ href: string }> = ({ children, href }) => (
 export default function Header(props: FlexProps) {
   const { isOpen, onToggle } = useDisclosure();
   const { isAuthenticated, logout, user } = useAuth();
+  const ThemeIcon = useColorModeValue(FaMoon, FaSun);
+  const { toggleColorMode } = useColorMode();
 
   return (
     <Flex
@@ -68,6 +72,14 @@ export default function Header(props: FlexProps) {
         ) : (
           <MenuItem href='/login'>Login</MenuItem>
         )}
+        <Box mx={[0, 4, 6]}>
+          <IconButton
+            variant='ghost'
+            aria-label='Theme toggle'
+            onClick={toggleColorMode}
+            icon={<ThemeIcon />}
+          />
+        </Box>
       </Box>
     </Flex>
   );

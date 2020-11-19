@@ -4,6 +4,8 @@ const { ExpressPeerServer } = require('peer');
 const app = require('./app');
 const Room = require('./models/Room');
 const Message = require('./models/Message');
+const User = require('./models/User');
+const Meeting = require('./models/Meeting');
 const Filter = require('bad-words');
 
 const server = http.createServer(app);
@@ -25,18 +27,28 @@ io.on('connection', async socket => {
   const id = socket.handshake.query.id;
 
   socket.on('video-join', async (meetingId, userId) => {
-    console.log('JOINED');
+    try {
+      const user = await User.findById(userId);
+      console.log(user);
 
-    socket.join(meetingId);
-    socket.to(meetingId).broadcast.emit('video-connected', userId);
+      await Meeting.updateOne(
+        { code: meetingId },
+        { $addToSet: { studentsPresent: userId } }
+      );
 
-    socket.on('disconnected-video', () => {
-      socket.to(meetingId).broadcast.emit('video-disconnected', userId);
-    });
+      socket.join(meetingId);
+      socket.to(meetingId).broadcast.emit('video-connected', user);
 
-    socket.on('disconnect', () => {
-      socket.to(meetingId).broadcast.emit('video-disconnected', userId);
-    });
+      socket.on('disconnected-video', () => {
+        socket.to(meetingId).broadcast.emit('video-disconnected', userId);
+      });
+
+      socket.on('disconnect', () => {
+        socket.to(meetingId).broadcast.emit('video-disconnected', userId);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   socket.on('send-rooms', async () => {

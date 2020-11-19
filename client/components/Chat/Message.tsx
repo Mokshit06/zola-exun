@@ -35,18 +35,6 @@ export default function Message(props: IMessage) {
           <Text fontWeight='semibold' fontSize='md'>
             {fromMe ? 'You' : from.name}
           </Text>
-          {/* <Card
-          variant={'outlined'}
-          css={css`
-            border: none;
-          `}
-          key={_id}
-          className={classes.card}
-        >
-          <Typography variant='body1' component='p'>
-            {body}
-          </Typography>
-        </Card> */}
           <Text>{body}</Text>
         </Flex>
       </Box>
