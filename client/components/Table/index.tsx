@@ -3,14 +3,14 @@ import React from 'react';
 
 export function Table(props: BoxProps) {
   return (
-    <Box shadow='sm' rounded='lg' overflowX='auto'>
+    <Box boxShadow='md' rounded='md' overflowX='auto'>
       <Box as='table' width='full' {...props} />
     </Box>
   );
 }
 
 export function TableHead(props: BoxProps) {
-  return <Box as='thead' {...props} />;
+  return <Box as='thead' borderBottomWidth={1} {...props} />;
 }
 
 export function TableRow(props: BoxProps) {
@@ -23,8 +23,7 @@ export function TableHeader(props: BoxProps) {
       as='th'
       px='6'
       py='4'
-      borderBottomWidth='1px'
-      backgroundColor='gray.50'
+      borderBottomWidth={1}
       textAlign='left'
       fontSize='sm'
       color='gray.500'

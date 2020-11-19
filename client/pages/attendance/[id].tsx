@@ -1,4 +1,11 @@
-import { Box, Checkbox, Flex, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Checkbox,
+  Flex,
+  Heading,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import {
   Table,
   TableBody,
@@ -17,6 +24,10 @@ export default function SingleAttendence() {
   const { data: meeting, error } = useSingleMeeting(meetingId as string);
   const { data: userClass } = useClass();
 
+  const bgColor = useColorModeValue('gray.50', 'gray.700');
+  const lightColor = useColorModeValue('white', 'gray.600');
+  const textColor = useColorModeValue('gray.500', 'gray.400');
+
   if (error) return 'Error';
 
   if (!userClass || !meeting) return <div />;
@@ -28,7 +39,7 @@ export default function SingleAttendence() {
           Attendence of {DateTime.fromISO(meeting.createdAt).toFormat('DDD')}
         </Heading>
         <Table>
-          <TableHead>
+          <TableHead bgColor={bgColor}>
             <TableRow>
               <TableHeader>S. No.</TableHeader>
               <TableHeader>Name</TableHeader>
@@ -39,17 +50,19 @@ export default function SingleAttendence() {
           </TableHead>
           <TableBody>
             {userClass.students.map((student, index) => {
-              const isPresent = !!meeting?.studentsPresent.find(
+              const isPresent = meeting?.studentsPresent.find(
                 u => u.user.id === student.id
               );
+
+              console.log(isPresent!);
 
               return (
                 <TableRow
                   key={student.id}
-                  bg={!(index % 2) ? 'white' : 'gray.50'}
+                  bg={!(index % 2) ? lightColor : bgColor}
                 >
                   <TableCell>
-                    <Text fontSize='md' color='gray.500'>
+                    <Text fontSize='md' color={textColor}>
                       {index + 1}
                     </Text>
                   </TableCell>
@@ -57,19 +70,25 @@ export default function SingleAttendence() {
                     <Text fontSize='md'>{student.name}</Text>
                   </TableCell>
                   <TableCell>
-                    <Text fontSize='md'>{student.email}</Text>
-                  </TableCell>
-                  <TableCell>
-                    <Text fontSize='md' color='gray.500'>
-                      19 November
+                    <Text fontSize='md' color={textColor}>
+                      {student.email}
                     </Text>
                   </TableCell>
                   <TableCell>
-                    <Text fontSize='md' color='gray.500'>
+                    <Text fontSize='md' color={textColor}>
+                      {!!isPresent
+                        ? DateTime.fromMillis(
+                            parseInt(isPresent.joinedAt)
+                          ).toFormat('t')
+                        : 'NA'}
+                    </Text>
+                  </TableCell>
+                  <TableCell>
+                    <Text fontSize='md' color={textColor}>
                       <Checkbox
                         size='lg'
                         isDisabled
-                        defaultIsChecked={isPresent}
+                        defaultIsChecked={!!isPresent}
                       />
                     </Text>
                   </TableCell>

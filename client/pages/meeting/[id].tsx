@@ -1,9 +1,17 @@
+import {
+  AspectRatio,
+  Box,
+  Flex,
+  Grid,
+  useColorModeValue,
+  useToast,
+} from '@chakra-ui/react';
 import useSocket from 'contexts/SocketProvider';
 import { useSingleMeeting } from 'hooks/api-hooks';
 import useAuth from 'hooks/useAuth';
 import { User } from 'interfaces';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, VideoHTMLAttributes } from 'react';
 
 export default function Meeting() {
   const socket = useSocket();
@@ -14,7 +22,9 @@ export default function Meeting() {
   const videoRef = useRef<HTMLVideoElement>();
   const { query } = useRouter();
   const { user } = useAuth();
+  const toast = useToast();
   const { id: meetingId } = query;
+  const bgColor = useColorModeValue('gray.100', 'gray.700');
   const { data: meeting, error: meetingError } = useSingleMeeting(
     meetingId as string,
     {
@@ -28,12 +38,16 @@ export default function Meeting() {
   };
 
   const connectNewUser = (user: User, stream: MediaStream) => {
-    console.log('CONNECTED', user.id);
     const call = peerClient.call(user.id, stream);
-    console.log(stream);
+
+    toast({
+      title: `${user.name} joined the meeting`,
+      status: 'info',
+      duration: 3000,
+      isClosable: true,
+    });
 
     call?.on('stream', (userVideoStream: MediaStream) => {
-      console.log('CALL STREAM');
       addVideoStream(userVideoStream);
     });
 
@@ -120,31 +134,48 @@ export default function Meeting() {
   }, [meetingId, socket, user, peerClient, shouldStart]);
 
   return (
-    <div>
+    <Flex flex={1} width='full' maxH='calc(100vh - 90px)' overflow='hidden'>
       {shouldStart && (
-        <>
-          <video
-            ref={videoRef}
-            muted
-            onLoadedMetadata={() => videoRef.current.play()}
-          />
+        <Grid
+          width='full'
+          templateColumns='repeat(auto-fit, minmax(500px, 1fr))'
+          alignContent='center'
+          bgColor={bgColor}
+          overflowX='hidden'
+        >
+          <AspectRatio overflow='hidden' maxw='100%' ratio={16 / 9}>
+            <video
+              ref={videoRef}
+              muted
+              onLoadedMetadata={() => videoRef.current.play()}
+            />
+          </AspectRatio>
           {videoStreams.map(stream => (
-            <Video key={stream.id} stream={stream} />
+            <AspectRatio key={stream.id} maxw='100%' ratio={16 / 9}>
+              <VideoStream stream={stream} />
+            </AspectRatio>
           ))}
-        </>
+        </Grid>
       )}
-    </div>
+    </Flex>
   );
 }
 
-function Video({ stream }: { stream: MediaStream }) {
-  const videoRef = useRef<HTMLVideoElement>();
+function VideoStream({
+  stream,
+  ...rest
+}: { stream: MediaStream } & VideoHTMLAttributes<HTMLVideoElement>) {
+  const videoRef = useRef<any>();
 
   useEffect(() => {
     videoRef.current.srcObject = stream;
   }, []);
 
   return (
-    <video ref={videoRef} onLoadedMetadata={() => videoRef.current.play()} />
+    <video
+      ref={videoRef}
+      {...rest}
+      onLoadedMetadata={() => videoRef.current.play()}
+    />
   );
 }
