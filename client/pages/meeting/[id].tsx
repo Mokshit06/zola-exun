@@ -13,6 +13,7 @@ import useSocket from 'contexts/SocketProvider';
 import { useSingleMeeting } from 'hooks/api-hooks';
 import useAuth from 'hooks/useAuth';
 import { User } from 'interfaces';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState, VideoHTMLAttributes } from 'react';
 import { MdCallEnd } from 'react-icons/md';
@@ -188,6 +189,9 @@ function Meeting() {
 
   return (
     <Flex flex={1} width='full' maxH='calc(100vh - 90px)' overflow='hidden'>
+      <Head>
+        <title>Meeting | Prisma</title>
+      </Head>
       {!error || shouldStart ? (
         <>
           <Grid

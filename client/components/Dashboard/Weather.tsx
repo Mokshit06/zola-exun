@@ -1,4 +1,11 @@
-import { Box, Flex, Image, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Image,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import { useWeather } from 'hooks/api-hooks';
 import useGeolocation from 'hooks/useGeolocation';
@@ -20,9 +27,9 @@ export default function Weather() {
         <Image src={data.icon} height={50} width={50} />
         <Flex ml='0.7rem' flexDir='column'>
           <Text fontSize='0.9rem'>{formattedDate}</Text>
-          <Text as='h2' letterSpacing={1.7} fontWeight={500} fontSize='1.6rem'>
+          <Heading as='h2' fontWeight={500} fontSize='1.7rem'>
             {data.weather}
-          </Text>
+          </Heading>
         </Flex>
       </Flex>
       <Box pos='relative'>

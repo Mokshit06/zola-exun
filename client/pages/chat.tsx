@@ -11,7 +11,7 @@ function Chat() {
   return (
     <>
       <Head>
-        <title>Chat | Exun</title>
+        <title>Chat | Prisma</title>
       </Head>
       <Flex flex={1} width='full' overflow='hidden'>
         <Sidebar />

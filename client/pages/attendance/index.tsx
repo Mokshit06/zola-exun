@@ -10,6 +10,7 @@ import { Auth } from 'components/Auth';
 import { NextChakraLink } from 'components/Link';
 import { useMeetings } from 'hooks/api-hooks';
 import { DateTime } from 'luxon';
+import Head from 'next/head';
 
 function Attendence() {
   const { data: meetings } = useMeetings();
@@ -18,6 +19,7 @@ function Attendence() {
 
   return (
     <Flex width='full' flex={1} alignItems='center' justifyContent='center'>
+      <Head>Attendence | Prisma</Head>
       <Box
         borderWidth={1}
         p={8}

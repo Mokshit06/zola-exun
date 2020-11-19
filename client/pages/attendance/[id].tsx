@@ -17,6 +17,7 @@ import {
 } from 'components/Table';
 import { useClass, useSingleMeeting } from 'hooks/api-hooks';
 import { DateTime } from 'luxon';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 function SingleAttendence() {
@@ -30,14 +31,20 @@ function SingleAttendence() {
   const textColor = useColorModeValue('gray.500', 'gray.400');
 
   if (error) return 'Error';
-
   if (!userClass || !meeting) return <div />;
+
+  const title = `Attendence of ${DateTime.fromISO(meeting?.createdAt).toFormat(
+    'DDD'
+  )}`;
 
   return (
     <Flex flex={1} width='full' justifyContent='center'>
+      <Head>
+        <title>{title} | Prisma</title>
+      </Head>
       <Box mt={4} maxW='90vw' w='1000px'>
         <Heading py={6} mb={2}>
-          Attendence of {DateTime.fromISO(meeting.createdAt).toFormat('DDD')}
+          {title}
         </Heading>
         <Table>
           <TableHead bgColor={bgColor}>

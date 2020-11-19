@@ -15,6 +15,7 @@ import useAuth from 'hooks/useAuth';
 import { ApiResponse } from 'interfaces';
 import api from 'lib/axios';
 import { ClassSchema } from 'lib/form-schema';
+import Head from 'next/head';
 import Router from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 
@@ -26,6 +27,9 @@ function CreateClass() {
 
   return (
     <Flex flex={1} width='full' alignItems='center' justifyContent='center'>
+      <Head>
+        <title>Create Class | Prisma</title>
+      </Head>
       <ShareModal
         isOpen={isOpen}
         onClose={() => {

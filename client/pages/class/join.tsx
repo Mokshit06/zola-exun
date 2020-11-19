@@ -4,9 +4,10 @@ import FormField from 'components/FormField';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useClass } from 'hooks/api-hooks';
 import useAuth from 'hooks/useAuth';
-import { ApiResponse, Class } from 'interfaces';
+import { ApiResponse } from 'interfaces';
 import api from 'lib/axios';
 import { ClassJoinSchema } from 'lib/form-schema';
+import Head from 'next/head';
 import Router from 'next/router';
 
 export default Auth(JoinClass, { isStudent: true });
@@ -14,6 +15,9 @@ export default Auth(JoinClass, { isStudent: true });
 function JoinClass() {
   return (
     <Flex flex={1} width='full' alignItems='center' justifyContent='center'>
+      <Head>
+        <title>Join you class | Prisma</title>
+      </Head>
       <Box
         borderWidth={1}
         p={8}
