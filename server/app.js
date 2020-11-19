@@ -10,14 +10,16 @@ const cors = require('cors');
 
 const app = express();
 
+const corsOptions = {
+  origin: (origin, callback) => {
+    callback(null, true);
+  },
+  credentials: true,
+};
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-  app.use(
-    cors({
-      origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-      credentials: true,
-    })
-  );
+  app.use(cors(corsOptions));
 } else {
   app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https') {

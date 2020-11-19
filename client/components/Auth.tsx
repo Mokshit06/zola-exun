@@ -34,8 +34,5 @@ export const Auth = (
     return null;
   }
 
-  console.log(isAuthenticated);
-  console.log(error);
-
   return <Component {...props} />;
 };
