@@ -11,7 +11,10 @@ const router = Router();
 
 router.get('/', ensureAuth, async (req, res, next) => {
   try {
-    const userClass = await Class.findById(req.user.class).populate('students');
+    const userClass = await Class.findById(req.user.class).populate([
+      'students',
+      'teacher',
+    ]);
 
     res.json(userClass);
   } catch (error) {

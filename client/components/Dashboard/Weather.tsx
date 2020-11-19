@@ -22,7 +22,7 @@ export default function Weather() {
   if (!data) return null;
 
   return (
-    <Box bgColor={bgColor} borderBottomRadius='50px' py='1.8rem' px='2.3rem'>
+    <Box bgColor={bgColor} borderBottomRadius='40px' py='1.8rem' px='2.3rem'>
       <Flex alignItems='flex-end' my='1rem'>
         <Image src={data.icon} height={50} width={50} />
         <Flex ml='0.7rem' flexDir='column'>

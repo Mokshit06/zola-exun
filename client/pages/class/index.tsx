@@ -32,6 +32,9 @@ function ClassPage() {
           Class {userClass?.grade}
           {userClass?.section}
         </Heading>
+        <Text fontWeight={500} fontSize='lg' mb={4}>
+          Teacher: {userClass?.teacher.name}
+        </Text>
         <Table>
           <TableHead bgColor={bgColor}>
             <TableRow>

@@ -9,7 +9,9 @@ router.get('/', ensureAuth, async (req, res, next) => {
   try {
     const meetings = await Meeting.find({
       class: req.user.class,
-    }).limit(8);
+    })
+      .limit(8)
+      .sort({ createdAt: -1 });
 
     res.json(meetings);
   } catch (error) {

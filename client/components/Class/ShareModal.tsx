@@ -68,7 +68,9 @@ export default function ShareModal({ isOpen, onClose, code }: ShareModalProps) {
           </Box>
         </AlertDialogBody>
         <AlertDialogFooter>
-          <Button ref={cancelRef}>Close</Button>
+          <Button ref={cancelRef} onClick={onClose}>
+            Close
+          </Button>
           <Button ml={3} colorScheme='red' onClick={copyLink}>
             Copy
           </Button>

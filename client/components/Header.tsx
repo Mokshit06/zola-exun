@@ -15,7 +15,7 @@ import { FaBars, FaMoon, FaSun, FaTimes } from 'react-icons/fa';
 import { NextChakraLink } from './Link';
 
 const MenuItem: React.FC<{ href: string }> = ({ children, href }) => (
-  <NextChakraLink href={href} mx={[0, 4, 6]} display='block'>
+  <NextChakraLink href={href} mx={[0, 0, 6]} my={[2, 2, 0]} display='block'>
     {children}
   </NextChakraLink>
 );
@@ -37,7 +37,7 @@ export default function Header(props: FlexProps) {
       {...props}
     >
       <Flex align='center' mr={5}>
-        <Heading as='h1' size='lg' letterSpacing={'-.1rem'}>
+        <Heading mb={{ base: 3, sm: 0 }} as='h1' size='lg'>
           Prisma
         </Heading>
       </Flex>
@@ -75,7 +75,7 @@ export default function Header(props: FlexProps) {
         ) : (
           <MenuItem href='/login'>Login</MenuItem>
         )}
-        <Box mx={[0, 4, 6]}>
+        <Box mx={[0, 0, 4]} mt={[2, 2, 0]}>
           <IconButton
             variant='ghost'
             aria-label='Theme toggle'
