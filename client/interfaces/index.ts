@@ -19,6 +19,7 @@ export type User = Model<{
   isTeacher: boolean;
   isAdmin: boolean;
   class: Class;
+  provider: string;
 }>;
 
 export type Room = Model<{
