@@ -3,6 +3,7 @@ import {
   Box,
   Flex,
   Grid,
+  IconButton,
   useColorModeValue,
   useToast,
 } from '@chakra-ui/react';
@@ -14,18 +15,26 @@ import useAuth from 'hooks/useAuth';
 import { User } from 'interfaces';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState, VideoHTMLAttributes } from 'react';
+import { MdCallEnd } from 'react-icons/md';
+
+interface VideoStream {
+  stream: MediaStream;
+  user: string;
+}
 
 function Meeting() {
   const socket = useSocket();
   const [shouldStart, setShouldStart] = useState(false);
   const [error, setError] = useState('');
-  const [videoStreams, setVideoStreams] = useState<MediaStream[]>([]);
+  const [videoStreams, setVideoStreams] = useState<VideoStream[]>([]);
   const [peerClient, setPeerClient] = useState<any>(null);
   const videoRef = useRef<HTMLVideoElement>();
-  const { query } = useRouter();
+  const router = useRouter();
   const { user } = useAuth();
+  const peers = {};
+  const [hangMeeting, setHangMeeting] = useState<() => void>(null);
   const toast = useToast();
-  const { id: meetingId } = query;
+  const { id: meetingId } = router.query;
   const bgColor = useColorModeValue('gray.100', 'gray.700');
   const { data: meeting, error: meetingError } = useSingleMeeting(
     meetingId as string,
@@ -35,8 +44,14 @@ function Meeting() {
     }
   );
 
-  const addVideoStream = (stream: MediaStream) => {
-    setVideoStreams([...videoStreams, stream]);
+  const addVideoStream = (userId: string, stream: MediaStream) => {
+    setVideoStreams([
+      ...videoStreams,
+      {
+        user: userId,
+        stream,
+      },
+    ]);
   };
 
   const connectNewUser = (user: User, stream: MediaStream) => {
@@ -50,12 +65,15 @@ function Meeting() {
     });
 
     call?.on('stream', (userVideoStream: MediaStream) => {
-      addVideoStream(userVideoStream);
+      addVideoStream(user.id, userVideoStream);
     });
 
     call?.on('close', () => {
-      setVideoStreams(videoStreams.filter(s => s === stream));
+      console.log('CLOSE');
+      setVideoStreams(videoStreams.filter(s => s.user === user.id));
     });
+
+    peers[user.id] = call;
   };
 
   const getVideo = async () => {
@@ -72,8 +90,9 @@ function Meeting() {
       peerClient.on('call', call => {
         console.log('ANSWER');
         call.answer(stream);
+        console.log(call);
         call.on('stream', (userVideoStream: MediaStream) => {
-          addVideoStream(userVideoStream);
+          addVideoStream(call.peer, userVideoStream);
         });
       });
 
@@ -123,6 +142,26 @@ function Meeting() {
   useEffect(() => {
     if (!socket || !meetingId || !peerClient || !shouldStart) return;
 
+    const disconnectUser = () => {
+      socket.emit('disconnected-video');
+    };
+
+    setHangMeeting(() => () => {
+      disconnectUser();
+      const myStream = videoRef.current.srcObject;
+      const tracks = (myStream as any).getTracks();
+
+      tracks.forEach(track => {
+        track.stop();
+      });
+
+      videoRef.current.srcObject = null;
+
+      router.push('/');
+    });
+
+    router.events.on('routeChangeStart', disconnectUser);
+
     peerClient.on('open', (id: string) => {
       console.log('OPEN');
       socket.emit('video-join', meetingId, id);
@@ -132,32 +171,63 @@ function Meeting() {
 
     socket.on('video-disconnected', (userId: string) => {
       console.log('DISCONNECTING');
+      setTimeout(() => {
+        peers[userId].close();
+
+        setVideoStreams(videoStreams =>
+          videoStreams.filter(s => s.user == userId)
+        );
+      }, 3000);
     });
+
+    return () => {
+      router.events.off('routeChangeStart', disconnectUser);
+      socket.off('video-disconnected');
+    };
   }, [meetingId, socket, user, peerClient, shouldStart]);
 
   return (
     <Flex flex={1} width='full' maxH='calc(100vh - 90px)' overflow='hidden'>
       {!error || shouldStart ? (
-        <Grid
-          width='full'
-          templateColumns='repeat(auto-fit, minmax(500px, 1fr))'
-          alignContent='center'
-          bgColor={bgColor}
-          overflowX='hidden'
-        >
-          <AspectRatio overflow='hidden' maxw='100%' ratio={16 / 9}>
-            <video
-              ref={videoRef}
-              muted
-              onLoadedMetadata={() => videoRef.current.play()}
-            />
-          </AspectRatio>
-          {videoStreams.map(stream => (
-            <AspectRatio key={stream.id} maxw='100%' ratio={16 / 9}>
-              <VideoStream stream={stream} />
+        <>
+          <Grid
+            width='full'
+            templateColumns='repeat(auto-fit, minmax(400px, 1fr))'
+            alignContent='center'
+            bgColor={bgColor}
+            overflowX='hidden'
+          >
+            <AspectRatio overflow='hidden' maxw='100%' ratio={16 / 9}>
+              <video
+                ref={videoRef}
+                muted
+                onLoadedMetadata={() => videoRef.current.play()}
+              />
             </AspectRatio>
-          ))}
-        </Grid>
+            {videoStreams.map(stream => (
+              <AspectRatio key={stream.user} maxw='100%' ratio={16 / 9}>
+                <VideoStream stream={stream.stream} />
+              </AspectRatio>
+            ))}
+          </Grid>
+          <Box
+            pos='absolute'
+            bottom='30px'
+            left='50%'
+            transform='translateX(-50%)'
+            zIndex={1000}
+          >
+            <IconButton
+              onClick={hangMeeting}
+              size='lg'
+              colorScheme='red'
+              fontSize={25}
+              isRound
+              aria-label='End meeting'
+              icon={<MdCallEnd />}
+            />
+          </Box>
+        </>
       ) : (
         <Loader />
       )}
