@@ -14,6 +14,7 @@ import useAuth from 'hooks/useAuth';
 import { ApiResponse } from 'interfaces';
 import api from 'lib/axios';
 import { ClassSchema } from 'lib/form-schema';
+import Router from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 export default function CreateClass() {
@@ -22,7 +23,14 @@ export default function CreateClass() {
 
   return (
     <Flex flex={1} width='full' alignItems='center' justifyContent='center'>
-      <ShareModal isOpen={isOpen} onClose={onClose} code={code} />
+      <ShareModal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+          Router.push('/');
+        }}
+        code={code}
+      />
       <Box
         borderWidth={1}
         p={8}

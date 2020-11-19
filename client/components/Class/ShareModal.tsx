@@ -1,18 +1,17 @@
 import {
   AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogCloseButton,
   AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
   AlertDialogFooter,
-  Button,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
+  Button,
   Text,
   useColorModeValue,
   useToast,
 } from '@chakra-ui/react';
-import Router from 'next/router';
 import { useRef } from 'react';
 
 interface ShareModalProps {
@@ -41,17 +40,12 @@ export default function ShareModal({ isOpen, onClose, code }: ShareModalProps) {
     }
   };
 
-  const handleClose = () => {
-    onClose();
-    Router.push('/');
-  };
-
   return (
     <AlertDialog
-      onOverlayClick={handleClose}
+      onOverlayClick={onClose}
       leastDestructiveRef={cancelRef}
       isOpen={isOpen}
-      onClose={handleClose}
+      onClose={onClose}
       isCentered
     >
       <AlertDialogOverlay />
@@ -59,7 +53,7 @@ export default function ShareModal({ isOpen, onClose, code }: ShareModalProps) {
         <AlertDialogHeader>Share this code!</AlertDialogHeader>
         <AlertDialogCloseButton />
         <AlertDialogBody>
-          Share this code with your students to join this class
+          Share this code with your students to join.
           <br />
           <Box
             py={2}

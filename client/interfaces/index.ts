@@ -1,3 +1,5 @@
+import { IconType } from 'react-icons/lib';
+
 type Model<T> = T & {
   createdAt: string;
   updatedAt: string;
@@ -45,3 +47,19 @@ export type Meeting = Model<{
     joinedAt: string;
   }[];
 }>;
+
+export interface Weather {
+  weather: string;
+  minTemp: number;
+  maxTemp: number;
+  temperature: number;
+  humidity: number;
+  feelsLike: number;
+  icon: string;
+}
+
+export interface Card {
+  icon: IconType;
+  title: string;
+  slug?: string;
+}

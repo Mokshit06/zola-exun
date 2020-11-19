@@ -1,4 +1,4 @@
-import { Class, Meeting, User } from 'interfaces';
+import { Class, Meeting, User, Weather } from 'interfaces';
 import fetcher from 'lib/fetcher';
 import useSWR, { ConfigInterface } from 'swr';
 import useAuth from './useAuth';
@@ -32,4 +32,11 @@ export function useMeetings() {
   const { user } = useAuth();
 
   return useSWR<Meeting[]>(user && '/api/meetings', fetcher);
+}
+
+export function useWeather(lat: number, lon: number) {
+  return useSWR<Weather>(
+    lat && lon ? `/api/weather?lat=${lat}&lon=${lon}` : null,
+    fetcher
+  );
 }

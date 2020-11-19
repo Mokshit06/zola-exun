@@ -1,12 +1,11 @@
-import { Box, Button, Heading, IconButton } from '@chakra-ui/react';
+import { Box, IconButton } from '@chakra-ui/react';
+import Appliances from 'components/Dashboard/Appliances';
+import Class from 'components/Dashboard/Class';
+import Weather from 'components/Dashboard/Weather';
 import useSpeechRecognition from 'contexts/SpeechProvider';
-import { Meeting } from 'interfaces';
-import api from 'lib/axios';
-import { useState } from 'react';
 import { MdMic, MdMicOff } from 'react-icons/md';
 
 export default function Dashboard() {
-  const [url, setURL] = useState('');
   const { recognition, isRecording } = useSpeechRecognition();
 
   const handleRecordClick = () => {
@@ -17,17 +16,11 @@ export default function Dashboard() {
     }
   };
 
-  async function createMeeting() {
-    const { data: meeting } = await api.post<Meeting>('/api/meetings', {});
-    const url = `${window.location.origin}/meeting/${meeting.code}`;
-    setURL(url);
-  }
-
   return (
     <div>
-      <Heading>Dashboard</Heading>
-      <Button onClick={createMeeting}>Create meeting</Button>
-      {url}
+      <Weather />
+      <Appliances />
+      <Class />
       <Box pos='absolute' bottom='30px' right='30px'>
         <IconButton
           onClick={handleRecordClick}
