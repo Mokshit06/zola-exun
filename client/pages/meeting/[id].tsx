@@ -173,7 +173,7 @@ function Meeting() {
     socket.on('video-disconnected', (userId: string) => {
       console.log('DISCONNECTING');
       setTimeout(() => {
-        peers[userId].close();
+        peers[userId]?.close();
 
         setVideoStreams(videoStreams =>
           videoStreams.filter(s => s.user == userId)
