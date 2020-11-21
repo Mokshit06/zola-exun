@@ -27,7 +27,12 @@ export default function Weather() {
         <Image src={data.icon} height={50} width={50} />
         <Flex ml='0.7rem' flexDir='column'>
           <Text fontSize='0.9rem'>{formattedDate}</Text>
-          <Heading as='h2' fontWeight={500} fontSize='1.7rem'>
+          <Heading
+            as='h2'
+            fontWeight={600}
+            letterSpacing={-0.3}
+            fontSize='1.7rem'
+          >
             {data.weather}
           </Heading>
         </Flex>
@@ -73,8 +78,8 @@ interface TemperatureProps {
 }
 
 function Temperature({ data, title }: TemperatureProps) {
-  const textColor = useColorModeValue('#5c5c5c', 'gray.200');
-  const darkTextColor = useColorModeValue('#666', 'gray.300');
+  const textColor = useColorModeValue('gray.600', 'gray.200');
+  const darkTextColor = useColorModeValue('gray.800', 'gray.300');
 
   return (
     <Box px='0.5rem' mx='0.5rem' minW={{ base: 'max-content', sm: null }}>

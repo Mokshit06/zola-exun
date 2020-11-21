@@ -1,4 +1,11 @@
-import { Box, Flex, Heading, Text, useColorModeValue } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Flex,
+  Heading,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { Auth } from 'components/Auth';
 import {
   Table,
@@ -39,6 +46,7 @@ function ClassPage() {
           <TableHead bgColor={bgColor}>
             <TableRow>
               <TableHeader>S. No.</TableHeader>
+              <TableHeader>Avatar</TableHeader>
               <TableHeader>Name</TableHeader>
               <TableHeader>Email</TableHeader>
               <TableHeader>Provider</TableHeader>
@@ -56,6 +64,9 @@ function ClassPage() {
                     <Text fontSize='md' color={textColor}>
                       {index + 1}
                     </Text>
+                  </TableCell>
+                  <TableCell>
+                    <Avatar src={student.image} size='sm' name={student.name} />
                   </TableCell>
                   <TableCell>
                     <Text fontSize='md'>{student.name}</Text>

@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   ButtonProps,
@@ -11,7 +12,6 @@ import {
 import NoSsr from 'components/NoSsr';
 import useGlobal from 'contexts/GlobalProvider';
 import { Card as CardType } from 'interfaces';
-import { useState } from 'react';
 
 export const CardsContainer: React.FC<{ title: string }> = ({
   title,
@@ -51,16 +51,16 @@ export const CardGrid: React.FC = ({ children }) => {
 
 interface CardProps {
   card: CardType;
-  title?: string;
 }
 
-export function Card({ card, title }: CardProps) {
+export function Card({ card }: CardProps) {
   const { appliances, dispatch } = useGlobal();
   const cardColor = useColorModeValue('#EDF2F7', 'rgba(255, 255, 255, 0.08)');
+  const isOn = appliances[card.slug];
 
   const handleChange = (event: any) => {
     dispatch({
-      type: appliances[card.slug] === false ? 'TURN_ON' : 'TURN_OFF',
+      type: isOn === false ? 'TURN_ON' : 'TURN_OFF',
       payload: card.slug,
     });
   };
@@ -80,16 +80,24 @@ export function Card({ card, title }: CardProps) {
           <NoSsr>
             <Switch
               size='lg'
-              defaultIsChecked={appliances[card.slug]}
-              isChecked={appliances[card.slug]}
+              defaultIsChecked={isOn}
+              isChecked={isOn}
               onChange={e => handleChange(e)}
             />
           </NoSsr>
         )}
       </Flex>
       <Box>
+        {card.slug &&
+          (isOn ? (
+            <Badge colorScheme='green'>OPEN</Badge>
+          ) : (
+            <Badge colorScheme='red'>CLOSED</Badge>
+          ))}
+
         <Text
           as='h3'
+          mt={1}
           fontSize={{ base: '1.24rem', sm: '1.4rem' }}
           letterSpacing='1px'
           fontWeight={500}
