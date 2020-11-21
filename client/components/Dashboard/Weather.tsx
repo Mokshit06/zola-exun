@@ -24,7 +24,7 @@ export default function Weather() {
   return (
     <Box bgColor={bgColor} borderBottomRadius='40px' py='1.8rem' px='2.3rem'>
       <Flex alignItems='flex-end' my='1rem'>
-        <Image src={data.icon} height={50} width={50} />
+        <Image src={data.icon} height={50} width={50} alt={data.weather} />
         <Flex ml='0.7rem' flexDir='column'>
           <Text fontSize='0.9rem'>{formattedDate}</Text>
           <Heading

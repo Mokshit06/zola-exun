@@ -118,8 +118,8 @@ function Meeting() {
 
         const peerClient = new Peer(user.id, {
           path: '/peerjs',
-          host: process.env.NODE_ENV !== 'production' ? 'localhost' : '/',
-          port: process.env.NODE_ENV === 'production' ? 443 : 5000,
+          host: 'localhost',
+          port: 5000,
         });
 
         console.log('CLIENT CREATED');

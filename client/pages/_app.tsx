@@ -19,6 +19,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChakraProvider theme={customTheme}>
       <Head>
         <title>Zola</title>
+        <meta name='title' content='Zola' />
+        <meta
+          name='description'
+          content="The first all in one platform which you didn't know you needed!"
+        />
       </Head>
       <GlobalProvider>
         <SpeechProvider>

@@ -12,6 +12,8 @@ import useAuth from 'hooks/useAuth';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FaRocket } from 'react-icons/fa';
+import NextImage from 'next/image';
+import { css } from '@emotion/react';
 
 export default function Home() {
   const router = useRouter();
@@ -39,6 +41,7 @@ export default function Home() {
       </Head>
       <Image
         src={`/assets/triangle-${colorMode}.svg`}
+        alt=''
         position='absolute'
         width='40%'
         top={0}
@@ -75,11 +78,14 @@ export default function Home() {
           </Button>
         </Flex>
         <Box height='full' width='full'>
-          <Image
-            border='none'
+          <NextImage
+            alt=''
             src='/assets/3784896.png'
-            width='full'
-            height='full'
+            width={800}
+            height={500}
+            css={css`
+              object-fit: contain;
+            `}
           />
         </Box>
       </SimpleGrid>
