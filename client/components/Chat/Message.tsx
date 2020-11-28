@@ -1,11 +1,11 @@
-import { Box, Avatar, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Avatar, Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import useAuth from 'hooks/useAuth';
 import { Message as IMessage } from 'interfaces';
-import { DateTime } from 'luxon';
+import { forwardRef } from 'react';
 
-export default function Message(props: IMessage) {
+const Message = forwardRef<HTMLDivElement, IMessage>((props, ref) => {
   const { user } = useAuth();
-  const { from, body, id } = props;
+  const { from, body } = props;
   const fromMe = from.id === user.id;
   const cardColor = useColorModeValue('#edf2f7', '#ffffff14');
 
@@ -14,6 +14,7 @@ export default function Message(props: IMessage) {
       p={2}
       display='flex'
       m={3}
+      ref={ref}
       flexDirection={fromMe ? 'row-reverse' : 'row'}
     >
       <Avatar src={from.image} name={from.image} />
@@ -40,4 +41,6 @@ export default function Message(props: IMessage) {
       </Box>
     </Box>
   );
-}
+});
+
+export default Message;

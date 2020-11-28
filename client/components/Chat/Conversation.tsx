@@ -7,7 +7,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 import useChats from 'contexts/ChatsProvider';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
 import { FaPaperPlane } from 'react-icons/fa';
 import Message from './Message';
 
@@ -15,10 +15,8 @@ export default function Conversation() {
   const { selectedRoom, sendMessage, messages } = useChats();
   const [isInvalid, setIsInvalid] = useState(false);
   const [text, setText] = useState('');
-  const scrollDownRef = useRef<HTMLDivElement>();
-
-  useEffect(() => {
-    scrollDownRef.current.scrollIntoView({ behavior: 'smooth' });
+  const scrollDownRef = useCallback((node: HTMLDivElement) => {
+    node?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   const handleSubmit = (e: FormEvent<HTMLDivElement>) => {
@@ -32,14 +30,21 @@ export default function Conversation() {
     setIsInvalid(false);
     sendMessage(text);
     setText('');
-    scrollDownRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <Flex flexDir='column' width='full' height='calc(100vh - 82px)'>
       <Box flex={1} overflowY='auto'>
-        {messages.map(message => {
-          return <Message key={message.id} {...message} />;
+        {messages.map((message, index) => {
+          const isLast = index == messages.length - 1;
+
+          return (
+            <Message
+              ref={isLast ? scrollDownRef : null}
+              key={message.id}
+              {...message}
+            />
+          );
         })}
       </Box>
       <Box m={3}>
