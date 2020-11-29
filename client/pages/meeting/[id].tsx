@@ -15,6 +15,7 @@ import useAuth from 'hooks/useAuth';
 import { User } from 'interfaces';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Peer from 'peerjs';
 import React, { useEffect, useRef, useState, VideoHTMLAttributes } from 'react';
 import { MdCallEnd } from 'react-icons/md';
 
@@ -115,12 +116,19 @@ function Meeting() {
     if (typeof window !== 'undefined') {
       const peerRun = async () => {
         const { default: Peer } = await import('peerjs');
-
-        const peerClient = new Peer(user.id, {
+        const opts: Peer.PeerJSOption = {
           path: '/peerjs',
-          host: 'localhost',
-          port: 5000,
-        });
+          host:
+            process.env.NODE_ENV == 'production'
+              ? 'api.zola.mokshitjain.co'
+              : 'localhost',
+        };
+
+        if (process.env.NODE_ENV !== 'production') {
+          opts.port = 5000;
+        }
+
+        const peerClient = new Peer(user.id, opts);
 
         console.log('CLIENT CREATED');
         setPeerClient(peerClient);

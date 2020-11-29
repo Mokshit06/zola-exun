@@ -8,6 +8,10 @@ RUN npm install
 
 COPY . .
 
+RUN npm run build
+
+COPY . .
+
 # WORKDIR /app/client
 
 # RUN npm install
@@ -17,6 +21,6 @@ COPY . .
 
 ENV NODE_ENV production
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["npm", "start"]
